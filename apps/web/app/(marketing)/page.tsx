@@ -42,15 +42,18 @@ function Home() {
               'flex w-full flex-1 flex-col items-center space-y-6 xl:space-y-8 2xl:space-y-10'
             }
           >
+            {/*
             <Pill new>
               <span>The leading SaaS Starter Kit for ambitious developers</span>
             </Pill>
+            */}
 
             <div className={'flex flex-col items-center space-y-8'}>
               <HeroTitle>
-                <span>The ultimate SaaS Starter</span>
+                <span>Daily AI-powered debriefing</span>
+                
+                <span>to make your life easier.</span>
 
-                <span>for your next project</span>
               </HeroTitle>
 
               <div className={'flex max-w-2xl flex-col space-y-1'}>
@@ -58,8 +61,10 @@ function Home() {
                   level={3}
                   className={'p-0 text-center font-sans text-base font-normal'}
                 >
-                  Build and Ship a SaaS faster than ever before with the
-                  next-gen SaaS Starter Kit. Ship your SaaS in days, not months.
+                  Consolidate all of your workday meetings<br />
+                  
+                  into one actionable summary
+                  
                 </Heading>
               </div>
             </div>
@@ -86,7 +91,10 @@ function Home() {
           />
         </div>
       </div>
-
+             
+      <ThreeFeaturesSection />
+      
+      {/*
       <div className={'container mx-auto'}>
         <div
           className={'flex flex-col space-y-16 xl:space-y-32 2xl:space-y-36'}
@@ -193,6 +201,50 @@ function Home() {
           </FeatureShowcaseContainer>
         </div>
       </div>
+      */}
+
+
+      <div className={'container mx-auto border-black rounded-3xl p-2 ring-2 ring-gray-100 dark:ring-primary/10 bg-violet-500'}>
+        <h2 className="font-normal tracking-tighter xl:text-4xl mb-4 text-center">
+          <b className="font-semibold dark:text-white">
+            <span className="text-white">How It Works</span>
+          </b>
+        </h2>      
+        <FeatureContainer className="grid w-full grid-cols-1 gap-3 space-y-0 lg:grid-cols-3 py-0">
+          {[
+            {
+              title: "Step 1: Authorize AI Assistant",
+              description: "Authorize our AI to automatically join your virtual meetings (Zoom, Teams, etc.)",
+            },
+            {
+              title: "Step 2: Receive Daily Summary",
+              description: "Receive your end-of-day summary via email (you pick the time of delivery)",
+            },
+            {
+              title: "Step 3: Boost Productivity",
+              description: "Close out your work day faster than ever before!",
+            },
+          ].map((card, index) => (
+            <FeatureCard
+              key={index}
+              className="relative w-full overflow-hidden lg:h-96 bg-white"
+              title={card.title}
+              description={card.description}
+            >
+              <Image
+                className="absolute left-16 top-32 hidden h-auto w-8/12 rounded-l-2xl lg:flex"
+                src="/images/sign-in.webp"
+                width={1760}
+                height={1680}
+                alt={`Step ${index + 1}`}
+              />
+            </FeatureCard>
+          ))}
+        </FeatureContainer>
+      </div>
+
+
+
 
       <div className={'container mx-auto'}>
         <div
@@ -325,6 +377,7 @@ function MainCallToActionButton() {
         </Link>
       </Button>
 
+      {/*
       <Button
         variant={'link'}
         className={'h-12 rounded-xl px-4 text-base font-semibold'}
@@ -334,6 +387,7 @@ function MainCallToActionButton() {
           <Trans i18nKey={'common:contactUs'} />
         </Link>
       </Button>
+      */}
     </div>
   );
 }
@@ -402,5 +456,67 @@ function GradientSecondaryText(
     >
       {props.children}
     </span>
+  );
+}
+
+function ThreeFeaturesSection(
+  props: React.PropsWithChildren<{
+    className?: string;
+  }>,
+) {
+  return (
+    <section className={cn(props.className, "container mx-auto px-4 py-16")}>
+      <FeatureRow
+        title="Streamlined Information"
+        description="Our end-of-day summary consolidates all key points, decisions, and tasks, from all of your meetings, reducing cognitive load."
+        imagePosition="right"
+      />
+      <FeatureRow
+        title="Unified Task Tracking"
+        description="Your end-of-day summary lists all action items discussed across all of your meetings, neatly categorized and prioritized, ensuring nothing is missed."
+        imagePosition="left"
+      />
+      <FeatureRow
+        title="Enhanced Accountability"
+        description="Your end-of-day summary includes commitment tracking, improving accountability and follow-up."
+        imagePosition="right"
+      />
+      {props.children}
+    </section>
+  );
+}
+
+function FeatureRow(
+  props: React.PropsWithChildren<{
+    title: string;
+    description: string;
+    imagePosition?: 'left' | 'right';
+    className?: string;
+  }>,
+) {
+  return (
+    <div className={cn(
+      props.className,
+      `flex flex-col ${props.imagePosition === 'left' ? 'md:flex-row-reverse' : 'md:flex-row'} items-center justify-between my-16`
+    )}>
+      <div className="w-full md:w-1/2 mb-8 md:mb-0">
+        <h2 className="text-3xl font-normal tracking-tighter xl:text-5xl mb-4">
+          <b className="font-semibold dark:text-white">
+            <span className="text-violet-500">{props.title.split(' ')[0]}</span>{' '}
+            {props.title.split(' ').slice(1).join(' ')}
+          </b>
+        </h2>
+        <Heading
+          level={3}
+          className="font-sans font-normal tracking-tight text-muted-foreground"
+        >
+          {props.description}
+        </Heading>
+      </div>
+      <div className="w-full md:w-1/2 flex justify-center">
+        <div className="w-64 h-64 bg-gray-300"></div>
+      </div>
+      {props.children}
+    </div>
   );
 }
