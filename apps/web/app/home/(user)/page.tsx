@@ -5,8 +5,9 @@ import { withI18n } from '~/lib/i18n/with-i18n';
 import { HomeLayoutPageHeader } from './_components/home-page-header';
 //import UserHomePageClient from './userhomepageclient';
 //import { TextEditor } from '@kit/text-editor';
-import { FileUploadPlugin } from '@kit/file-upload-gpt';
+//import { FileUploadPlugin } from '@kit/file-upload-gpt';
 //import { FileUploadPlugin } from 'packages/plugins/file-upload-gpt';
+import FileUploadPage from './file-upload/page';
 import '@kit/text-editor/style';
 
 export const generateMetadata = async () => {
@@ -26,7 +27,7 @@ function UserHomePage() {
         description={<Trans i18nKey={'common:homeTabDescription'} />}
       />
       <PageBody>
-        <FileUploadPlugin />
+        <FileUploadPage />
       </PageBody>
     </>
   );
