@@ -1,9 +1,21 @@
 // app/home/(user)/file-upload/page.tsx
-import { loadUserWorkspace } from '~/home/_lib/server/load-user-workspace';
-import { FileUploadForm } from './FileUploadForm';
+'use client';
 
-export default async function FileUploadPage() {
-  const { account, user } = await loadUserWorkspace();
+import React, { useState } from 'react';
+import { useUserWorkspace } from '@kit/accounts/hooks/use-user-workspace';
+import { useFileUpload } from './use-file-upload';
+
+export default function FileUploadPage() {
+  const { account, user } = useUserWorkspace();
+  const { handleFileUpload, response, loading, error } = useFileUpload();
+  const [file, setFile] = useState<File | null>(null);
+
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    if (file && account) {
+      handleFileUpload(file, account.id);
+    }
+  };
 
   if (!user) {
     return <div>Please log in to use this feature.</div>;
@@ -16,7 +28,25 @@ export default async function FileUploadPage() {
   return (
     <div>
       <h2>Upload File and Analyze</h2>
-      <FileUploadForm accountId={account.id} />
+      <form onSubmit={handleSubmit}>
+        <input
+          type="file"
+          accept=".txt"
+          onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+          disabled={loading}
+        />
+        <button type="submit" disabled={!file || loading}>
+          {loading ? 'Processing...' : 'Upload and Analyze'}
+        </button>
+      </form>
+      {loading && <div>Processing your file. This may take a few moments...</div>}
+      {error && <div>Error: {error.message}</div>}
+      {response && !loading && (
+        <div>
+          <h3>Analysis Result:</h3>
+          <pre>{JSON.stringify(response, null, 2)}</pre>
+        </div>
+      )}
     </div>
   );
 }
