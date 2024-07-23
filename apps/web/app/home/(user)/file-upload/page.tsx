@@ -1,7 +1,7 @@
 // app/home/(user)/file-upload/page.tsx
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useUserWorkspace } from '@kit/accounts/hooks/use-user-workspace';
 import { useFileUpload } from './use-file-upload';
 
@@ -9,6 +9,14 @@ export default function FileUploadPage() {
   const { account, user } = useUserWorkspace();
   const { handleFileUpload, response, loading, error } = useFileUpload();
   const [file, setFile] = useState<File | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Check if the user and account data has been loaded
+    if (user !== undefined && account !== undefined) {
+      setIsLoading(false);
+    }
+  }, [user, account]);
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -16,6 +24,10 @@ export default function FileUploadPage() {
       handleFileUpload(file, account.id);
     }
   };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   if (!user) {
     return <div>Please log in to use this feature.</div>;
