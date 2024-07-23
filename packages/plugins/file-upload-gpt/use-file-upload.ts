@@ -1,14 +1,29 @@
 // use-file-upload.ts
-'use client';
-
 import { useState } from 'react';
+import { useUserData } from './use-user-data';
 
 export function useFileUpload() {
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState<any | null>(null);
   const [error, setError] = useState<Error | null>(null);
+  const { userData, loading: userDataLoading, error: userDataError } = useUserData();
 
   const handleFileUpload = async (file: File) => {
+    if (userDataLoading) {
+      setError(new Error('User data is still loading. Please try again.'));
+      return;
+    }
+
+    if (userDataError) {
+      setError(new Error('Failed to load user data. Please refresh and try again.'));
+      return;
+    }
+
+    if (!userData) {
+      setError(new Error('No user data available. Please log in and try again.'));
+      return;
+    }
+
     setLoading(true);
     setError(null);
     setResponse(null);
@@ -21,8 +36,8 @@ export function useFileUpload() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          userOrganizationUUID: "aa7d5a12-66d6-4f18-b906-310e990ad796",
-          workflowUUID: "2eadf7b4-d869-4dcb-9cd6-8a8c64ab1359",
+          userOrganizationUUID: userData.userOrganizationUUID,
+          workflowUUID: userData.workflowUUID,
           variables: {
             internal: {
               platform: "api"
@@ -48,5 +63,5 @@ export function useFileUpload() {
     }
   };
 
-  return { handleFileUpload, response, loading, error };
+  return { handleFileUpload, response, loading: loading || userDataLoading, error: error || userDataError };
 }
