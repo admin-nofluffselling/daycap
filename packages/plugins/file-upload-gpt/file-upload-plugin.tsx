@@ -24,14 +24,14 @@ export function FileUploadPlugin() {
           onChange={(e) => setFile(e.target.files?.[0] ?? null)}
         />
         <button type="submit" disabled={!file || loading}>
-          {loading ? 'Uploading...' : 'Upload and Analyze'}
+          {loading ? 'Processing...' : 'Upload and Analyze'}
         </button>
       </form>
       {error && <div>Error: {error.message}</div>}
       {response && (
         <div>
           <h3>Analysis Result:</h3>
-          <p>{response}</p>
+          <pre>{JSON.stringify(response, null, 2)}</pre>
         </div>
       )}
     </div>
