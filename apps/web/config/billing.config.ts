@@ -20,11 +20,20 @@ export default createBillingSchema({
       badge: `Value`,
       plans: [
         {
+          name: 'Enterprise',
+          id: 'enterprise',
+          paymentType: 'recurring',
+          label: 'common:contactUs',
+          href: '/contact',
+          custom: true,
+          interval: 'month',
+          lineItems: [],
+        }
+        {
           name: 'Starter Monthly',
           id: 'starter-monthly',
           paymentType: 'recurring',
           interval: 'month',
-          custom: true,
           lineItems: [
             {
               id: 'price_1NNwYHI1i3VnbZTqI2UzaHIe',
