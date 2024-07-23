@@ -1,3 +1,4 @@
+// file-upload-plugin.tsx
 'use client';
 
 import React, { useState } from 'react';
@@ -27,8 +28,9 @@ export function FileUploadPlugin() {
           {loading ? 'Processing...' : 'Upload and Analyze'}
         </button>
       </form>
+      {loading && <div>Processing your file. This may take a few moments...</div>}
       {error && <div>Error: {error.message}</div>}
-      {response && (
+      {response && !loading && (
         <div>
           <h3>Analysis Result:</h3>
           <pre>{JSON.stringify(response, null, 2)}</pre>
