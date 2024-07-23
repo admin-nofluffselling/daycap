@@ -1,15 +1,11 @@
 // app/api/file-upload/route.ts
 import { NextRequest, NextResponse } from 'next/server';
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
+import { getServerSession } from '@kit/app/auth/server-session';
 
 export async function POST(req: NextRequest) {
   try {
-    // Initialize the Supabase client
-    const supabase = createRouteHandlerClient({ cookies });
-
-    // Check if the user is authenticated
-    const { data: { session } } = await supabase.auth.getSession();
+    // Check if the user is authenticated using Makerkit's session
+    const session = await getServerSession();
 
     if (!session) {
       return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
