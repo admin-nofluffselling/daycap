@@ -28,7 +28,7 @@ export default createBillingSchema({
           custom: true,
           interval: 'month',
           lineItems: [],
-        }
+        },
         {
           name: 'Starter Monthly',
           id: 'starter-monthly',
