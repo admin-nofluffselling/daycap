@@ -17,15 +17,17 @@ export default function FileUploadPage() {
     console.log('Account:', account);
     console.log('Accounts:', accounts);
 
-    if (user !== undefined) {
+    // Add a small delay to ensure the data has time to load
+    const timer = setTimeout(() => {
       setIsLoading(false);
-    }
+    }, 1000);
+
+    return () => clearTimeout(timer);
   }, [user, account, accounts]);
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     if (file && accounts && accounts.length > 0) {
-      // Use the first account if the main account is not available
       const accountId = account?.id || accounts[0].id;
       if (accountId) {
         handleFileUpload(file, accountId);
@@ -39,15 +41,18 @@ export default function FileUploadPage() {
     return <div>Loading user data...</div>;
   }
 
-  if (!user) {
-    return <div>Please log in to use this feature.</div>;
-  }
-
-  // Debug information
   console.log('Rendering component');
   console.log('User:', user);
   console.log('Account:', account);
   console.log('Accounts:', accounts);
+
+  if (!user) {
+    return <div>Please log in to use this feature.</div>;
+  }
+
+  if (!account && (!accounts || accounts.length === 0)) {
+    return <div>Unable to load account data. Please try reloading the page.</div>;
+  }
 
   return (
     <div>
