@@ -22,6 +22,9 @@ export function useFileUpload() {
       });
 
       if (!res.ok) {
+        if (res.status === 401) {
+          throw new Error('Authentication failed. Please log in and try again.');
+        }
         throw new Error(`HTTP error! status: ${res.status}`);
       }
 
