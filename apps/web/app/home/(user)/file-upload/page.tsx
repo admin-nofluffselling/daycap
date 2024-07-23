@@ -17,7 +17,6 @@ export default function FileUploadPage() {
     console.log('Account:', account);
     console.log('Accounts:', accounts);
 
-    // Add a small delay to ensure the data has time to load
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 1000);
@@ -27,13 +26,8 @@ export default function FileUploadPage() {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    if (file && accounts && accounts.length > 0) {
-      const accountId = account?.id || accounts[0].id;
-      if (accountId) {
-        handleFileUpload(file, accountId);
-      } else {
-        console.error('No valid account ID found');
-      }
+    if (file && account) {
+      handleFileUpload(file, account.id);
     }
   };
 
@@ -41,25 +35,26 @@ export default function FileUploadPage() {
     return <div>Loading user data...</div>;
   }
 
-  console.log('Rendering component');
-  console.log('User:', user);
-  console.log('Account:', account);
-  console.log('Accounts:', accounts);
-
   if (!user) {
     return <div>Please log in to use this feature.</div>;
   }
 
   if (!account && (!accounts || accounts.length === 0)) {
-    return <div>Unable to load account data. Please try reloading the page.</div>;
+    return (
+      <div>
+        <h2>Account Setup Required</h2>
+        <p>You are logged in as {user.email}, but no account has been set up for you.</p>
+        <p>Please contact your administrator or follow the account setup process to continue.</p>
+        <p>User ID: {user.id}</p>
+        <p>Last Sign In: {new Date(user.last_sign_in_at).toLocaleString()}</p>
+      </div>
+    );
   }
 
   return (
     <div>
       <h2>Upload File and Analyze</h2>
-      {!account && accounts && accounts.length > 0 ? (
-        <p>Using first available account: {accounts[0].name}</p>
-      ) : account ? (
+      {account ? (
         <p>Using account: {account.name}</p>
       ) : (
         <p>No account data available. Please try reloading the page.</p>
@@ -69,9 +64,9 @@ export default function FileUploadPage() {
           type="file"
           accept=".txt"
           onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-          disabled={loading}
+          disabled={loading || !account}
         />
-        <button type="submit" disabled={!file || loading || (!account && (!accounts || accounts.length === 0))}>
+        <button type="submit" disabled={!file || loading || !account}>
           {loading ? 'Processing...' : 'Upload and Analyze'}
         </button>
       </form>
