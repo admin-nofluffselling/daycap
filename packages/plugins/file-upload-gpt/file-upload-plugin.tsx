@@ -3,41 +3,26 @@
 
 import React, { useState } from 'react';
 import { useFileUpload } from './use-file-upload';
-import { useUserData } from './use-user-data';
-import { useAuth } from '@/hooks/use-auth';
-import AuthPanelWrapper from '@/app/auth/components/AuthPanelWrapper';
+import { useUserWorkspace } from '@kit/accounts/hooks/use-user-workspace';
 
 export function FileUploadPlugin() {
   const { handleFileUpload, response, loading, error } = useFileUpload();
-  const { userData, loading: userLoading, error: userError } = useUserData();
+  const { account, user } = useUserWorkspace();
   const [file, setFile] = useState<File | null>(null);
-  const auth = useAuth();
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    if (file && userData) {
-      handleFileUpload(file, userData.userOrganizationUUID);
+    if (file && account) {
+      handleFileUpload(file, account.id);
     }
   };
 
-  if (!auth.user) {
-    return (
-      <AuthPanelWrapper>
-        <div>Please log in to use this feature.</div>
-      </AuthPanelWrapper>
-    );
+  if (!user) {
+    return <div>Please log in to use this feature.</div>;
   }
 
-  if (userLoading) {
-    return <div>Loading user data...</div>;
-  }
-
-  if (userError) {
-    return <div>Error: {userError.message}</div>;
-  }
-
-  if (!userData) {
-    return <div>Unable to load user data. Please try again later.</div>;
+  if (!account) {
+    return <div>Unable to load account data. Please try again later.</div>;
   }
 
   return (
