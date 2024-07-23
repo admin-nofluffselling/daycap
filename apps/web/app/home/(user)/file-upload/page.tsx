@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useFileUpload } from './use-file-upload';
+import { useFileUpload } from './use-file-uploads';
 import { useUserWorkspace } from '@kit/accounts/hooks/use-user-workspace';
 
 export default function FileUploadPage() {
