@@ -13,23 +13,6 @@ export default createBillingSchema({
   // products configuration
   products: [
     {
-      id: 'free',
-      name: 'Free Trial',
-      description: 'Free for you, for now.',
-      currency: 'USD',
-      badge: `Value`,
-      plans: [
-        {
-          name: 'Free Trial',
-          id: 'free-trial',
-          paymentType: 'recurring',
-          interval: 'month',
-          custom: true,
-          lineItems: [],
-        },
-      ],
-    },
-    {
       id: 'starter',
       name: 'Starter',
       description: 'The perfect plan to get started',
@@ -66,6 +49,96 @@ export default createBillingSchema({
         },
       ],
       features: ['Feature 1', 'Feature 2', 'Feature 3'],
+    },
+    {
+      id: 'pro',
+      name: 'Pro',
+      badge: `Popular`,
+      highlighted: true,
+      description: 'The perfect plan for professionals',
+      currency: 'USD',
+      plans: [
+        {
+          name: 'Pro Monthly',
+          id: 'pro-monthly',
+          paymentType: 'recurring',
+          interval: 'month',
+          lineItems: [
+            {
+              id: 'price_1PGOAVI1i3VnbZTqc69xaypm',
+              name: 'Base',
+              cost: 19.99,
+              type: 'flat',
+            },
+          ],
+        },
+        {
+          name: 'Pro Yearly',
+          id: 'pro-yearly',
+          paymentType: 'recurring',
+          interval: 'year',
+          lineItems: [
+            {
+              id: 'price_pro_yearly',
+              name: 'Base',
+              cost: 199.99,
+              type: 'flat',
+            },
+          ],
+        },
+      ],
+      features: [
+        'Feature 1',
+        'Feature 2',
+        'Feature 3',
+        'Feature 4',
+        'Feature 5',
+      ],
+    },
+    {
+      id: 'enterprise',
+      name: 'Enterprise',
+      description: 'The perfect plan for enterprises',
+      currency: 'USD',
+      plans: [
+        {
+          name: 'Enterprise Monthly',
+          id: 'enterprise-monthly',
+          paymentType: 'recurring',
+          interval: 'month',
+          lineItems: [
+            {
+              id: 'price_enterprise-monthly',
+              name: 'Base',
+              cost: 29.99,
+              type: 'flat',
+            },
+          ],
+        },
+        {
+          name: 'Enterprise Yearly',
+          id: 'enterprise-yearly',
+          paymentType: 'recurring',
+          interval: 'year',
+          lineItems: [
+            {
+              id: 'price_enterprise_yearly',
+              name: 'Base',
+              cost: 299.99,
+              type: 'flat',
+            },
+          ],
+        },
+      ],
+      features: [
+        'Feature 1',
+        'Feature 2',
+        'Feature 3',
+        'Feature 4',
+        'Feature 5',
+        'Feature 6',
+        'Feature 7',
+      ],
     },
   ],
 });
