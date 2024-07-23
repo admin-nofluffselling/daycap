@@ -20,8 +20,8 @@ export default createBillingSchema({
       badge: `Value`,
       plans: [
         {
-          name: 'Enterprise',
-          id: 'enterprise',
+          name: 'Starter Enterprise',
+          id: 'starter-enterprise',
           paymentType: 'recurring',
           label: 'common:contactUs',
           href: '/contact',
