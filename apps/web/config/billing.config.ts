@@ -13,6 +13,23 @@ export default createBillingSchema({
   // products configuration
   products: [
     {
+      id: 'free',
+      name: 'Free Trial',
+      description: 'Free for you, for now.',
+      currency: 'USD',
+      badge: `Value`,
+      plans: [
+        {
+          name: 'Free Trial',
+          id: 'free-trial',
+          paymentType: 'recurring',
+          interval: 'month',
+          custom: true,
+          lineItems: [],
+        },
+      ],
+    },
+    {
       id: 'starter',
       name: 'Starter',
       description: 'The perfect plan to get started',
