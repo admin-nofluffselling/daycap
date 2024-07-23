@@ -24,6 +24,7 @@ export default createBillingSchema({
           id: 'starter-monthly',
           paymentType: 'recurring',
           interval: 'month',
+          custom: true,
           lineItems: [
             {
               id: 'price_1NNwYHI1i3VnbZTqI2UzaHIe',
