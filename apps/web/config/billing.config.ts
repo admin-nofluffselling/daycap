@@ -13,49 +13,21 @@ export default createBillingSchema({
   // products configuration
   products: [
     {
-      id: 'starter',
-      name: 'Starter',
-      description: 'The perfect plan to get started',
+      id: 'trial',
+      name: 'Trial',
+      description: 'Try it out',
       currency: 'USD',
       badge: `Value`,
       plans: [
         {
-          name: 'Starter Enterprise',
-          id: 'starter-enterprise',
+          name: 'Trial',
+          id: 'trial',
           paymentType: 'recurring',
           label: 'common:contactUs',
           href: '/contact',
           custom: true,
           interval: 'month',
           lineItems: [],
-        },
-        {
-          name: 'Starter Monthly',
-          id: 'starter-monthly',
-          paymentType: 'recurring',
-          interval: 'month',
-          lineItems: [
-            {
-              id: 'price_1NNwYHI1i3VnbZTqI2UzaHIe',
-              name: 'Addon 2',
-              cost: 9.99,
-              type: 'flat' as const,
-            },
-          ],
-        },
-        {
-          name: 'Starter Yearly',
-          id: 'starter-yearly',
-          paymentType: 'recurring',
-          interval: 'year',
-          lineItems: [
-            {
-              id: 'starter-yearly',
-              name: 'Base',
-              cost: 99.99,
-              type: 'flat' as const,
-            },
-          ],
         },
       ],
       features: ['Feature 1', 'Feature 2', 'Feature 3'],
