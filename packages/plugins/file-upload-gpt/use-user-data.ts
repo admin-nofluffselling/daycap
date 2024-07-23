@@ -1,23 +1,30 @@
 // use-user-data.ts
 import { useState, useEffect } from 'react';
+import { useAuth } from '@/hooks/use-auth';
 
 interface UserData {
   userOrganizationUUID: string;
-  workflowUUID: string;
+  // Note: workflowUUID has been removed as it's not in our schema
 }
 
 export function useUserData() {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
+  const auth = useAuth();
 
   useEffect(() => {
     async function fetchUserData() {
+      if (!auth.user) {
+        setLoading(false);
+        return;
+      }
+
       try {
-        // Replace this with your actual API call to fetch user data
         const response = await fetch('/api/user-data');
         if (!response.ok) {
-          throw new Error('Failed to fetch user data');
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Failed to fetch user data');
         }
         const data = await response.json();
         setUserData(data);
@@ -29,7 +36,7 @@ export function useUserData() {
     }
 
     fetchUserData();
-  }, []);
+  }, [auth.user]);
 
   return { userData, loading, error };
 }
