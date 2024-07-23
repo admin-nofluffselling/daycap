@@ -6,40 +6,59 @@ import { useUserWorkspace } from '@kit/accounts/hooks/use-user-workspace';
 import { useFileUpload } from './use-file-upload';
 
 export default function FileUploadPage() {
-  const { account, user } = useUserWorkspace();
+  const { account, user, accounts } = useUserWorkspace();
   const { handleFileUpload, response, loading, error } = useFileUpload();
   const [file, setFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check if the user and account data has been loaded
-    if (user !== undefined && account !== undefined) {
+    console.log('useEffect triggered');
+    console.log('User:', user);
+    console.log('Account:', account);
+    console.log('Accounts:', accounts);
+
+    if (user !== undefined) {
       setIsLoading(false);
     }
-  }, [user, account]);
+  }, [user, account, accounts]);
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    if (file && account) {
-      handleFileUpload(file, account.id);
+    if (file && accounts && accounts.length > 0) {
+      // Use the first account if the main account is not available
+      const accountId = account?.id || accounts[0].id;
+      if (accountId) {
+        handleFileUpload(file, accountId);
+      } else {
+        console.error('No valid account ID found');
+      }
     }
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div>Loading user data...</div>;
   }
 
   if (!user) {
     return <div>Please log in to use this feature.</div>;
   }
 
-  if (!account) {
-    return <div>Unable to load account data. Please try again later.</div>;
-  }
+  // Debug information
+  console.log('Rendering component');
+  console.log('User:', user);
+  console.log('Account:', account);
+  console.log('Accounts:', accounts);
 
   return (
     <div>
       <h2>Upload File and Analyze</h2>
+      {!account && accounts && accounts.length > 0 ? (
+        <p>Using first available account: {accounts[0].name}</p>
+      ) : account ? (
+        <p>Using account: {account.name}</p>
+      ) : (
+        <p>No account data available. Please try reloading the page.</p>
+      )}
       <form onSubmit={handleSubmit}>
         <input
           type="file"
@@ -47,7 +66,7 @@ export default function FileUploadPage() {
           onChange={(e) => setFile(e.target.files?.[0] ?? null)}
           disabled={loading}
         />
-        <button type="submit" disabled={!file || loading}>
+        <button type="submit" disabled={!file || loading || (!account && (!accounts || accounts.length === 0))}>
           {loading ? 'Processing...' : 'Upload and Analyze'}
         </button>
       </form>
